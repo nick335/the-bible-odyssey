@@ -2,20 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components{
+  .marginLayout{
+    @apply mx-4 lg:w-[90%] lg:mx-auto lg:max-w-[80rem];
+  }
+  .paddingLayout{
+    @apply px-6 lg:w-[90%] lg:px-0 lg:mx-auto lg:max-w-[80rem];
+  }
+  .formLayout{
+    @apply w-full  lg:mx-auto lg:max-w-[30.375rem] mt-6 lg:mt-8 px-6 pb-8 lg:pb-16 font-circular;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
