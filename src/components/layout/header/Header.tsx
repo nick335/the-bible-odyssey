@@ -49,8 +49,8 @@ const Header = () => {
           />
         </div>
         <ul className='hidden lg:flex items-center gap-x-10 '>
-          <AnimateMenuLi id='about' closeMenu={hide} className='cursor-pointer !font-bubblegum !text-xl text-white text-stroke' name='About Us' />
-          <AnimateMenuLi closeMenu={hide} className='cursor-pointer !font-bubblegum !text-xl text-white text-stroke' name='Join Us' id='newsletter' />
+          <AnimateMenuLi id='about' closeMenu={hide} className='cursor-pointer !font-bubblegum !text-xl text-transparent bg-gradient-to-t  from-primaryGradient-light  to-primaryGradient-dark bg-clip-text text-stroke' name='About Us' />
+          <AnimateMenuLi closeMenu={hide} className='cursor-pointer !font-bubblegum !text-xl text-transparent bg-gradient-to-t  from-primaryGradient-light  to-primaryGradient-dark bg-clip-text text-stroke' name='Join Us' id='newsletter' />
         </ul>
         <FiMenu className='text-white text-2xl lg:hidden' onClick={show} />     
       </nav>

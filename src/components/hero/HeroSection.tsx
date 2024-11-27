@@ -7,13 +7,13 @@ import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { TextPlugin } from 'gsap/TextPlugin'
+import heroHeader from '@/public/heroHeader.svg'
 
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(TextPlugin)
 
 
 const HeroSection = () => {
-
   const heroImageRef = useRef<HTMLDivElement>(null)
   const heroInputDiv = useRef<HTMLDivElement>(null)
   const heroComingSoon = useRef<HTMLDivElement>(null)
@@ -94,8 +94,14 @@ const HeroSection = () => {
   return (
     <section className='lg:flex lg:items-start lg:pb-20 lg:pt-10 lg:gap-4 marginLayout pt-8'>
       <div className='lg:w-2/4'>
-        <div className='relative max-w-[220px] mx-auto lg:mx-0 lg:max-w-[377px]'>
-          <h3 className={`font-bubblegum font-semibold text-[43px] text-center text-transparent leading-[3rem] bg-gradient-to-t  from-primaryGradient-light  to-primaryGradient-dark bg-clip-text text-stroke lg:text-[80px] lg:text-left lg:leading-[100px] `}>The Bible Odyssey</h3>
+        <div className='relative w-[220px] mx-auto lg:mx-0 lg:w-[377px]'>
+          <ResponsiveImage 
+            src={heroHeader}
+            alt='hero header'
+            width={377}
+            height={279}
+            placeholder='empty'
+          />
           <div className='w-[43px] h-[17px] rounded-sm bg-gradient-to-t from-primaryGradient-light to-primaryGradient-dark flex justify-center items-center absolute top-2 -right-[43px] lg:w-[91px] lg:h-[35px] lg:rounded-md lg:top-5 lg:-right-[91px]' ref={heroComingSoon}>
             <p className='text-center text-white text-[6px] font-raleway font-bold lg:text-xs'>coming soon</p>
           </div>
