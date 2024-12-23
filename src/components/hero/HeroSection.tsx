@@ -7,7 +7,7 @@ import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { TextPlugin } from 'gsap/TextPlugin'
-import heroHeader from '@/public/heroHeader.svg'
+import heroHeader from '@/public/heroHeader.png'
 import useSuccessStore from '@/src/store/newslettterStore'
 import ThankYou from '../utility/ThankYou'
 import { useMutation } from '@tanstack/react-query'
@@ -32,13 +32,14 @@ const HeroSection = () => {
     setSuccess(true)
     setTimeout(() => {
       setSuccess(false)
-    },  6000)
+    },  10000)
   }
 
   const mutatation = useMutation({
     mutationFn: subscribeTonewsLetter,
     onSuccess: () => {
       toggleSuccess()
+      setEmail('')
     }
   })
 
@@ -51,8 +52,9 @@ const HeroSection = () => {
     if (!mutatation.isPending) {
       try {
         await mutatation.mutateAsync(email);
-      } catch (error) {
-        console.error("Error during subscription:", error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        toast.error("Error during subscription:", error);
       }
     }
   };
@@ -150,7 +152,7 @@ const HeroSection = () => {
         {
           isSuccess ? 
           <div className='mt-5 lg:mt-8 lg:max-w-[31.0125rem] '>
-            <ThankYou className='!text-primaryText text-center lg:text-left' />
+            <ThankYou className='!text-primaryText text-center lg:text-left font-raleway text-base lg:text-xl' />
           </div>
           : 
           <div className='mt-5 lg:max-w-[31.0125rem]  lg:mt-8 lg:relative lg:mx-0' ref={heroInputDiv}>

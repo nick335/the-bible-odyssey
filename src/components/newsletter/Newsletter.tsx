@@ -18,7 +18,8 @@ const Newsletter = () => {
     setSuccess(true)
     setTimeout(() => {
       setSuccess(false)
-    },  6000)
+      setEmail('')
+    },  10000)
   }
     const mutatation = useMutation({
       mutationFn: subscribeTonewsLetter,
@@ -36,8 +37,9 @@ const Newsletter = () => {
       if (!mutatation.isPending) {
         try {
           await mutatation.mutateAsync(email);
-        } catch (error) {
-          console.error("Error during subscription:", error);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+          toast.error("Error during subscription:", error.message);
         }
       }
     };
@@ -52,7 +54,7 @@ const Newsletter = () => {
         <div className='mt-6 lg:max-w-[45.3125rem] lg:mx-auto lg:mt-16 lg:relative'>
           <div className='p-[1px] rounded-md bg-gradient-to-r from-primaryGradient-light to-primaryGradient-dark shadow-[0px_4px_10px_3px_#0000001C] relative'>
             <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter email address to get updates ' className='w-full pl-3 pr-1 py-[1.425rem] font-raleway text-sm border-none outline-none lg:text-base rounded-md' />
-            {mutatation.isPending && <Icon icon="line-md:loading-loop" className='text-3xl text-primaryGradient-light absolute top-1/2 -translate-y-1/2 right-4 lg:right-10'  />}
+            {mutatation.isPending && <Icon icon="line-md:loading-loop" className='text-3xl text-primaryGradient-light absolute top-1/2 -translate-y-1/2 right-4 lg:right-32'  />}
           </div>
           <div className='mt-6 flex justify-center items-center lg:absolute lg:w-fit lg:h-fit lg:top-0 lg:mt-0 lg:right-4 ' onClick={subscribe} >
             <ResponsiveImage 
@@ -72,7 +74,7 @@ const Newsletter = () => {
               className='cursor-pointer hidden lg:block'
             />
         </div>
-      </div> : <ThankYou className='mt-4 lg:mt-6 text-center lg:max-w-[45.3125rem] lg:mx-auto ' />
+      </div> : <ThankYou className='mt-4 lg:mt-6 text-center lg:max-w-[45.3125rem] lg:mx-auto font-raleway text-base lg:text-lg' />
       }
       
     </section>
