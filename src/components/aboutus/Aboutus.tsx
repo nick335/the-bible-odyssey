@@ -83,7 +83,7 @@ const Aboutus = () => {
         }
       )
     }
-  })
+  }, [])
   return (
     <section id='about' className='flex flex-col-reverse gap-10 py-6 lg:flex-row items-center lg:mr-[5%]'>
       <div ref={aboutImageRef}  className='relative w-full aspect-[1105/488]'>

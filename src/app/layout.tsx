@@ -5,6 +5,9 @@ import "./globals.css";
 import Header from "@/src/components/layout/header/Header";
 // import Footer from "../components/layout/footer/Footer";
 import HeroSection from "../components/hero/HeroSection";
+import { QueryClientWrapper } from "@/src/lib/QueryClient";
+import { Suspense } from "react";
+import ToastContainerComponent from "../components/utility/ToastContainerComponent";
 
 
 const Bubblegum = localFont({
@@ -36,13 +39,18 @@ export default function RootLayout({
       <body
         className={` ${Bubblegum.variable} ${RalewayVariable.variable} antialiased min-h-screen bg-mobileBodyBg bg-cover bg-center bg-no-repeat lg:bg-none`}
       >
-        <div className="lg:bg-desktopUpperBodyBg lg:bg-cover lg:bg-center lg:bg-no-repeat">
-          <Header />
-          <HeroSection />
-        </div>
-        <div>
-          {children}
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <QueryClientWrapper>
+            <div className="lg:bg-desktopUpperBodyBg lg:bg-cover lg:bg-center lg:bg-no-repeat">
+              <Header />
+              <HeroSection />
+            </div>
+            <div>
+              {children}
+            </div>
+            <ToastContainerComponent />
+          </QueryClientWrapper>
+        </Suspense>
       </body>
     </html>
   );

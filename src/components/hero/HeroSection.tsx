@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import ResponsiveImage from '../utility/image/ResponsiveImage'
 import hero from '@/public/herophone.png'
 import button from "@/public/herobutton.svg"
@@ -8,16 +8,54 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { TextPlugin } from 'gsap/TextPlugin'
 import heroHeader from '@/public/heroHeader.svg'
+import useSuccessStore from '@/src/store/newslettterStore'
+import ThankYou from '../utility/ThankYou'
+import { useMutation } from '@tanstack/react-query'
+import { subscribeTonewsLetter } from '@/src/api/subscribeTonewsLetter'
+import { isValidEmail } from '@/src/lib/utilsFunction/isValidEmail'
+import { toast } from 'react-toastify'
+import { Icon } from '@iconify/react'
 
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(TextPlugin)
 
 
 const HeroSection = () => {
+  const { isSuccess, setSuccess} = useSuccessStore()
   const heroImageRef = useRef<HTMLDivElement>(null)
   const heroInputDiv = useRef<HTMLDivElement>(null)
   const heroComingSoon = useRef<HTMLDivElement>(null)
   const aboutTextRef = useRef<HTMLParagraphElement>(null)
+  const [email, setEmail] = useState('')
+
+  const toggleSuccess = () => {
+    setSuccess(true)
+    setTimeout(() => {
+      setSuccess(false)
+    },  6000)
+  }
+
+  const mutatation = useMutation({
+    mutationFn: subscribeTonewsLetter,
+    onSuccess: () => {
+      toggleSuccess()
+    }
+  })
+
+  const subscribe = async () => {
+    if (!email || !isValidEmail(email)) {
+      toast.error("Please provide a valid email address.");
+      return;
+    }
+  
+    if (!mutatation.isPending) {
+      try {
+        await mutatation.mutateAsync(email);
+      } catch (error) {
+        console.error("Error during subscription:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     const aboutText = aboutTextRef.current
@@ -89,7 +127,7 @@ const HeroSection = () => {
         }
       )
     }
-  }, )
+  }, [])
 
   return (
     <section className='lg:flex lg:items-start lg:pb-20 lg:pt-10 lg:gap-4 marginLayout pt-8'>
@@ -109,12 +147,19 @@ const HeroSection = () => {
         <p className='font-raleway text-base text-primaryText text-center lg:text-left lg:text-xl pt-3 lg:max-w-[560px]lg:pt-4' ref={aboutTextRef}>
           
         </p>
-        <div className='mt-5 lg:max-w-[31.0125rem]  lg:mt-8 lg:relative lg:mx-0' ref={heroInputDiv}>
-          <label className='font-raleway text-sm font-bold '>Email Address</label>
-          <div className='p-[1px] rounded-md bg-gradient-to-r from-primaryGradient-light to-primaryGradient-dark shadow-[0px_4px_10px_3px_#0000001C] mt-2'>
-            <input type='email' placeholder='Enter email address to get updates ' className='w-full pl-3 pr-1 py-4 font-raleway text-sm border-none outline-none lg:text-base rounded-md' />
+        {
+          isSuccess ? 
+          <div className='mt-5 lg:mt-8 lg:max-w-[31.0125rem] '>
+            <ThankYou className='!text-primaryText text-center lg:text-left' />
           </div>
-          <div className='mt-2 flex justify-center items-center lg:justify-start' >
+          : 
+          <div className='mt-5 lg:max-w-[31.0125rem]  lg:mt-8 lg:relative lg:mx-0' ref={heroInputDiv}>
+          <label className='font-raleway text-sm font-bold '>Email Address</label>
+          <div className='p-[1px] rounded-md bg-gradient-to-r from-primaryGradient-light to-primaryGradient-dark shadow-[0px_4px_10px_3px_#0000001C] mt-2 relative'>
+            <input value={email} onChange={(e) => setEmail(e.target.value)} type='email' placeholder='Enter email address to get updates ' className='w-full pl-3 pr-1 py-4 font-raleway text-sm border-none outline-none lg:text-base rounded-md' />
+            {mutatation.isPending && <Icon icon="line-md:loading-loop" className='text-3xl text-primaryGradient-light absolute top-1/2 -translate-y-1/2 right-4 lg:right-10'  />}
+          </div>
+          <div className='mt-2 flex justify-center items-center lg:justify-start' onClick={subscribe} >
             <ResponsiveImage  
               src={button}
               alt='hero'
@@ -126,6 +171,8 @@ const HeroSection = () => {
             />
            </div>
         </div>
+        }
+        
       </div>
       <div className='hidden lg:block relative w-2/4'  ref={heroImageRef}>
         <ResponsiveImage 
